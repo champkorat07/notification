@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+<title>ADD</title>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/jquery/jquery.min.js"></script>
+<sec:csrfMetaTags />
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script th:inline="javascript">
+	var data = /*[[${name}]]*/{};
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+</script>
+<script src="/js/app.js"></script>
+<script>
+	connect();
+</script>
+<style>
+.nav>li.dropdown {
+	position: static;
+}
+
+.nav>li.dropdown .dropdown-menu {
+	width: 100%;
+	text-align: center;
+	left: 0;
+	right: 0;
+}
+
+.nav>li.dropdown.open {
+	position: static;
+}
+
+.nav>li.dropdown.open .dropdown-menu {
+	text-align: center;
+	left: 0;
+	right: 0;
+}
+
+.dropdown-menu>li {
+	height: 350px;
+}
+
+.content {
+	color: #222;
+	padding-top: 80px;
+}
+
+a:hover {
+	text-decoration: none;
+}
+</style>
+</head>
+<body>
+	<noscript>
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Websocket relies on Javascript being enabled. Please
+			enable Javascript and reload this page!</h2>
+	</noscript>
+<div style="display:none;" id="name">[[${#httpServletRequest.remoteUser}]]</div>
+	<div class="video-container" th:fragment="header">
+		<div class="navbar navbar-default overlay">
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{/notification}">แจ้งเตือน
+						<p id="greetings">0</p>
+				</a></li>
+				<li><a th:href="@{/menu}"> หน้าหลัก </a> </li>
+				<li><a th:href="@{/addnotification}"> เพิ่มแจ้งเตือน   </a></li>
+		
+			</ul>
+		</div>
+	</div>
+	<form class="form_class" id="form_addnoti" method="post">
+		<div class="form-group" id="user-group"></div>
+		Text <input type='text' id="text" name='text'>
+		To	 <input type='text' id="to" name='to'>
+		<input type="button" value="Send" id='smit' >
+	</form>
+	
+
+
+</body>
+<script>
+document.getElementById('smit').onclick = function () {
+	 var text = document.getElementById("text").value;
+	 var to = document.getElementById("to").value;
+	 var obj =  [
+		    {
+		        "member_token": to,
+		        "member_text": text
+		    }
+		];
+	 $.ajax({
+			type : 'POST',
+			contentType : "application/json; charset=utf-8",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+				xhr.timeout = 4000;
+			},
+			url : "http://localhost:9999/app_muilnotification",
+			data: JSON.stringify(obj),
+			dataType : "json",
+			timeout : 4000,
+			error : function(data) {
+				location.reload()
+				console.log("error", data);
+			},
+			success : function(data) {
+				location.reload()
+			}
+		});
+}
+
+
+</script>
+</html>
