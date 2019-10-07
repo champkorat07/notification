@@ -17,7 +17,7 @@ import com.example.notificationclient.servers.UserDetailsServiceImpl;
 
 
 @Configuration
-@EntityScan("com.example.notidamo.entites")
+@EntityScan("com.example.notificationclient")
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

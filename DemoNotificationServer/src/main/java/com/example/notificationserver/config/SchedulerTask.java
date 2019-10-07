@@ -1,7 +1,6 @@
 package com.example.notificationserver.config;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -18,7 +17,6 @@ public class SchedulerTask {
 	@Autowired
 	private NotificationServer app_notificationserver;
 
-	private static final Integer EXPIRE_MINS = 12;
 	private LoadingCache<String, Integer> timenotification;
 	private SimpMessagingTemplate template;
 	int count = 0;
@@ -26,7 +24,7 @@ public class SchedulerTask {
 	@Autowired
 	public SchedulerTask(SimpMessagingTemplate template) {
 		this.template = template;
-		timenotification = CacheBuilder.newBuilder().expireAfterWrite(EXPIRE_MINS, TimeUnit.HOURS)
+		timenotification = CacheBuilder.newBuilder().maximumSize(1)
 				.build(new CacheLoader<String, Integer>() {
 					public Integer load(String key) {
 						return 0;

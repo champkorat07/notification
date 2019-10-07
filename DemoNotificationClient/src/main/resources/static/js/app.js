@@ -4,15 +4,14 @@ if('serviceWorker' in navigator){
     }).catch(err => {
         console.warn(`Registration:`, err);
     })
-}  
-/*window.console.log = function(){
+}
+ 
+window.console.log = function(){
     console.error('The developer console is temp...');
     window.console.log = function() {
         return false;
     }
-}*/
-
-
+}
 
 window.onload = () => {    
         if("Notification" in window){
@@ -30,13 +29,12 @@ window.onload = () => {
         setInterval(ajaxCall, 5000);        
     }
 
-
 function ajaxCall() {
-    //do your AJAX stuff here
+    // do your AJAX stuff here
 	var nameuser = document.getElementById("name").innerText;
-	//console.log(nameuser);
+	// console.log(nameuser);
 	$.ajax({
-    	   type:'POST',
+    	   type:'GET',
     	   contentType : "application/json",
     	   url :"http://localhost:9999/timecheck/?username="+nameuser,
     	   beforeSend: function(xhr){
@@ -49,16 +47,13 @@ function ajaxCall() {
     		  // console.log("pass");
     	   },
     	   error : function(){
-    		 //  console.log("not pass");
+    		 // console.log("not pass");
     	   }
     	}); 
     
 }
 
-
 var stompClient = null;
-
-
 function connect() {
     var socket = new SockJS('http://localhost:9999/zengcode-websocket');
     stompClient = Stomp.over(socket);
@@ -95,7 +90,7 @@ function shownotification(){
                         body: "You have notification!",
                         icon: "img/icon_notification.png",
 						image: "img/notification-flat.png",
-						click_action : "http://localhost:8080/notification"
+						action : "http://localhost:8080/notification"
                     }
                     sw.showNotification("You have notification!", options);
                    

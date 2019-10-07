@@ -9,16 +9,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.notificationserver.entities.NotificationEntities;
+import com.example.notificationserver.entities.apps_notification;
 
 @Repository
-public interface NotificationRepository extends CrudRepository<NotificationEntities, String> {
+public interface NotificationRepository extends CrudRepository<apps_notification, String> {
 
-	@Query("select count(i) from apps_notification i where i.msg_status=1 and i.member_token= :name")
-	int appcount(@Param("name") String name);
+	@Query("select count(i) from apps_notification i where i.msg_status = 1 and i.member_token= :name")
+	public int appcount(@Param("name") String name);
 
 	@Query("select i from apps_notification i where i.member_token=:name")
-	List<NotificationEntities> findAllActiveUsers(@Param("name") String name);
+	List<apps_notification> findAllActiveUsers(@Param("name") String name);
 
 	@Modifying
 	@Transactional

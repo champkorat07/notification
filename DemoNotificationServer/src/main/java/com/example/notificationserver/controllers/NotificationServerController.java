@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.notificationserver.config.SchedulerTask;
-import com.example.notificationserver.entities.NotificationEntities;
+import com.example.notificationserver.entities.apps_notification;
 import com.example.notificationserver.servers.NotificationServer;
 
 @RestController
-
 public class NotificationServerController {
 
 	@Autowired
@@ -27,16 +26,9 @@ public class NotificationServerController {
 	private SchedulerTask schedulertask;
 
 	// add notification
-	@RequestMapping(value = "/app_notification", method = RequestMethod.POST)
-	@CrossOrigin(origins = "http://localhost:8080")
-	public void addnotification(@RequestBody NotificationEntities notiadd) {
-		app_notificationserver.addnotirespository(notiadd);
-	}
-
 	@RequestMapping(value = "/app_muilnotification", method = RequestMethod.POST)
 	@CrossOrigin(origins = "http://localhost:8080")
-	public void addmuilnotification(@RequestBody Iterable<NotificationEntities> notiadd) {
-		System.out.println("pass");
+	public void addmuilnotification(@RequestBody Iterable<apps_notification> notiadd) {
 		app_notificationserver.addmuilnotirespository(notiadd);
 	}
 
@@ -48,18 +40,25 @@ public class NotificationServerController {
 		app_notificationserver.checknotification(name);
 	}
 
-	// (@RequestParam(value = "id") String ids)
 	// select notification
 	@RequestMapping(path = "/notifications", method = RequestMethod.GET)
 	@CrossOrigin(origins = "http://localhost:8080")
-	public List<NotificationEntities> countnotification(@RequestParam(value = "username") String name, Model model) {
+	public List<apps_notification> countnotification(@RequestParam(value = "username") String name, Model model) {
 		return app_notificationserver.selectsomestatusmsg(name);
 	}
 
-	@RequestMapping(value = "/timecheck", method = RequestMethod.POST)
+	@RequestMapping(value = "/timecheck", method = RequestMethod.GET)
 	@CrossOrigin(origins = "http://localhost:8080")
 	public void getnotification(@RequestParam(value = "username") String name) {
 		schedulertask.sendMessageToClient(name);
 	}
 
 }
+
+/*
+ * @RequestMapping(value = "/app_notification", method = RequestMethod.POST)
+ * 
+ * @CrossOrigin(origins = "http://localhost:8080") public void
+ * addnotification(@RequestBody apps_notification notiadd) {
+ * app_notificationserver.addnotirespository(notiadd); }
+ */
