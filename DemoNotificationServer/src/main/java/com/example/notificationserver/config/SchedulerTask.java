@@ -24,12 +24,11 @@ public class SchedulerTask {
 	@Autowired
 	public SchedulerTask(SimpMessagingTemplate template) {
 		this.template = template;
-		timenotification = CacheBuilder.newBuilder().maximumSize(1)
-				.build(new CacheLoader<String, Integer>() {
-					public Integer load(String key) {
-						return 0;
-					}
-				});
+		timenotification = CacheBuilder.newBuilder().maximumSize(1).build(new CacheLoader<String, Integer>() {
+			public Integer load(String key) {
+				return 0;
+			}
+		});
 	}
 
 	public void sendMessageToClient(String name) {
@@ -40,13 +39,13 @@ public class SchedulerTask {
 			e.printStackTrace();
 		}
 		String msg = Integer.toString(nowcountnotification);
+		this.template.convertAndSend("/topic/greetings/" + name, new Payload(msg));	
 		if (count < nowcountnotification) {
 			timenotification.put(name, nowcountnotification);
-			this.template.convertAndSend("/topic/greetings/" + name, new Payload(msg));
 			this.template.convertAndSend("/topic/notiings/" + name, new Payload(msg));
 		} else if (count > nowcountnotification) {
-			this.template.convertAndSend("/topic/greetings/" + name, new Payload(msg));
 			timenotification.put(name, nowcountnotification);
+			
 		}
 	}
 }

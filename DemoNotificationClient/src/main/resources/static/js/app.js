@@ -6,13 +6,6 @@ if('serviceWorker' in navigator){
     })
 }
  
-window.console.log = function(){
-    console.error('The developer console is temp...');
-    window.console.log = function() {
-        return false;
-    }
-}
-
 window.onload = () => {    
         if("Notification" in window){
             Notification.requestPermission(permission => {
@@ -26,13 +19,11 @@ window.onload = () => {
             prepend("Notification API is not supported in your browser!");
         }  
         
-        setInterval(ajaxCall, 5000);        
+        ajaxCall();        
     }
 
 function ajaxCall() {
-    // do your AJAX stuff here
 	var nameuser = document.getElementById("name").innerText;
-	// console.log(nameuser);
 	$.ajax({
     	   type:'GET',
     	   contentType : "application/json",
@@ -44,10 +35,8 @@ function ajaxCall() {
     	   dataType: "json",
     	   timeout: 4000,
     	   success : function(){
-    		  // console.log("pass");
     	   },
     	   error : function(){
-    		 // console.log("not pass");
     	   }
     	}); 
     
@@ -103,5 +92,12 @@ function shownotification(){
         prepend("Notification API is not supported in your browser!");
     }
 }
+
+/*window.console.log = function(){
+    console.error('The developer console is temp...');
+    window.console.log = function() {
+        return false;
+    }
+}*/
 
 

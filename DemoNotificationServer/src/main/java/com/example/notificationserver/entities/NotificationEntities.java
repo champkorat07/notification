@@ -64,13 +64,8 @@ public class NotificationEntities {
 	public String getTimestamp() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		String string = dateFormat.format(new Date(timestamp.getTime()));
-		// Date date = new Date(timestamp.getTime());
 		return string;
 	}
-	/*public Timestamp getTimestamp() {
-		return timestamp;
-	}*/
-
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}

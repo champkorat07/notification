@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.notificationserver.config.SchedulerTask;
 import com.example.notificationserver.entities.apps_notification;
 import com.example.notificationserver.repositorys.NotificationRepository;
 
@@ -15,6 +16,9 @@ public class NotificationServer {
 
 	@Autowired
 	private NotificationRepository app_notirespository;
+
+	@Autowired
+	private SchedulerTask schdulertask;
 
 	public List<apps_notification> getAllCosmetics() {
 		return (List<apps_notification>) app_notirespository.findAll();
@@ -26,6 +30,8 @@ public class NotificationServer {
 			app.setTimestamp(timestamp);
 			app.setMsg_status(1);
 			app_notirespository.save(app);
+			String name = app.getMember_token();
+			schdulertask.sendMessageToClient(name);
 		}
 	}
 
@@ -47,6 +53,8 @@ public class NotificationServer {
 
 	public void checknotification(String name) {
 		app_notirespository.updateNotification(name);
+		System.out.println("Run update");
+		schdulertask.sendMessageToClient(name);
 	}
 }
 
